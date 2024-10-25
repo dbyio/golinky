@@ -1,4 +1,4 @@
-# golinky: A simple but safe URL shortener, in golang.
+# golinky: a simple but safe URL shortener, in golang.
 
 ## Usage
 
@@ -27,14 +27,14 @@ Content-Length: 59
 ### Management endpoints
 
 >Management routes authenticate requests with the security header `x-auth-token` (or fails with status code 405).
->See `AUTH_TOKEN` above.
+>See `AUTH_TOKEN` below.
 
 `/shorten` (**post**)
 
 Return a shortened URL.
 
 Parameters:
-- `url`: long URL
+- `url`: target URL
 
 _Example:_
 ```bash
@@ -50,14 +50,14 @@ Return the number of items in store.
 
 _Example:_
 ```bash
-$ curl https://s.doma.in:8000/stats
+$ curl https://s.doma.in/stats
 
 {"dbsize":5}
 ```
 
 ### Click tracking
 
-You can optionally use a callback listener to receive click tracking data. On click events, a POST is executed toward the configured callback URL with the following data:
+You can optionally use a callback listener to receive click tracking events. On short url access, a POST is executed toward the configured callback, with the following data:
 
 ```json
 {
@@ -70,7 +70,7 @@ You can optionally use a callback listener to receive click tracking data. On cl
 }
 ```
 
-The value of `msg-id` is the path section of the shortened URL and can be used to match a sent message (email or SMS).
+The value of `msg-id` is the path section of the shortened URL and can be used to match a sent message.
 
 
 ### Predictability of short URLs
