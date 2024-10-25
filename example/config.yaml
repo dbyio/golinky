@@ -1,0 +1,6 @@
+length: 13
+timeout: 15811200 # 6 months
+redis_url: rediss://:password@redis-server-url:6380/
+baseurl: https://s.doma.in/
+seed: f8J12
+callback_url: https://t.mydomain.com/clicks
