@@ -57,7 +57,7 @@ $ curl https://s.doma.in/stats
 
 ### Click tracking
 
-You can optionally use a callback listener to receive click tracking events. On short url access, a POST is executed toward the configured callback, with the following data:
+You can optionally use a callback listener to receive click tracking events. On short URL access, a POST is executed toward the configured callback, with the following data:
 
 ```json
 {
@@ -70,7 +70,7 @@ You can optionally use a callback listener to receive click tracking events. On 
 }
 ```
 
-The value of `msg-id` is the path section of the shortened URL and can be used to match a sent message.
+The value of `msg-id` is the path section of the shortened URL and can be used to match the event with an external context (e.g marketing campaign).
 
 
 ### Predictability of short URLs
@@ -79,24 +79,23 @@ For use cases where this is a concern, golinky mitigates the predictability of k
 
 ## Setup 
 
+### Redis (key storage)
+
+golinky currently requires a Redis store as a backend to keep track of shortened URLs. *Beware storage keys come with a TTL (by design)*, set using the `timeout` configuration parameter.
+
+> Note on resilience: since Redis isn't natively resilient to crashes and restarts, make sure you setup your own data persistence mechanism if you need any level of resilience (backups or else).
+
 ### Configuration file
 
 ```yaml
-length: 13                      # length of URL keys
-timeout: 1728000                # TTL of URLs, in seconds
-redis_url: ${REDIS_URL}         # URL of the Redis store
-baseurl: https://s.doma.in/     # baseurl for the short URL
-seed: f8J12                     # secrect seed for URL key generation
-callback_url: ${CALLBACK_URL}   # callback URL for click tracking (optional)
+length: 13                        # length of URL keys
+timeout: 1728000                  # TTL of URLs, in seconds
+redis_url: redis://redissrv:6379/ # URI of the Redis store
+baseurl: https://s.doma.in/       # baseurl for the short URL
+seed: f8J12                       # secrect seed for URL key generation
+callback_url: https://t.doma.in/  # callback URL for click tracking (optional)
 ```
 
 ### Environment variables
 
 * `AUTH_TOKEN`: secret token to authenticate access to management endpoints (see below).
-
-
-### Redis (key storage)
-
-golinky currently requires a Redis store as a backend to keep track of shortened URLs. *Beware storage keys come with a TTL (by design)*, set using the `timeout` configuration parameter.
-
-> Note on resilience: since Redis isn't natively resilient to crashes and restart, make sure you implement some form of data persistence mechanism if you need any level of resilience (backups of else).
